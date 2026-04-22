@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sweet Treats App</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+* { font-family: 'Poppins', sans-serif; }
+.no-scroll::-webkit-scrollbar { width: 0; height: 0; }
+@keyframes typing { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.fade-up { animation: fadeUp 0.45s ease forwards; }
+</style>
+</head>
+<body style="margin:0;background:linear-gradient(135deg,#E8D5B0 0%,#D4B896 50%,#C4A07A 100%);min-height:100vh">
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// ── COLORS ──────────────────────────────────────────────────────
+const T = {
+  light:{ bg:'#F5EDDA', card:'#FDFAF4', text:'#2C1A0E', sub:'#A07355', border:'#EDE0C4', nav:'#FDFAF4', input:'#F5EDDA', section:'#EDE0C4' },
+  dark: { bg:'#1A1008', card:'#2C1A0E', text:'#F5EDDA', sub:'#A07355', border:'#3D2A1A', nav:'#1A1008', input:'#2C1A0E', section:'#241508' }
+};
+
+// ── ICONS ────────────────────────────────────────────────────────
+const Ico = ({d,w=24,h=24,fill='none',stroke='currentColor',sw=2,lc='round',lj='round',size=20,color='currentColor'}) => (
+  <svg width={size} height={size} viewBox={`0 0 ${w} ${h}`} fill={fill} stroke={color} strokeWidth={sw} strokeLinecap={lc} strokeLinejoin={lj}>
+    {Array.isArray(d) ? d.map((p,i)=><path key={i} d={p}/>) : <path d={d}/>}
+  </svg>
+);
+const IcoHome  = p => <Ico {...p} d={["M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z","M9 22V12h6v10"]} />;
+const IcoShop  = p => <Ico {...p} d={["M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z","M3 6h18","M16 10a4 4 0 01-8 0"]} />;
+const IcoAlert = p => <svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>;
+const IcoChat  = p => <Ico {...p} d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />;
+const IcoUser  = p => <Ico {...p} d={["M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"]} w={24} h={24}><circle cx="12" cy="7" r="4" stroke={p.color||'currentColor'} strokeWidth="2" fill="none"/></Ico>;
+const IcoBell  = p => <Ico {...p} d={["M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9","M13.73 21a2 2 0 01-3.46 0"]} />;
+const IcoLeft  = p => <svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>;
+const IcoRight = p => <svg width={p.size||16} height={p.size||16} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>;
+const IcoPlus  = p => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
+const IcoSend  = p => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>;
+const IcoCam   = p => <svg width={p.size||22} height={p.size||22} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>;
+const IcoSearch= p => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
+const IcoMoon  = p => <Ico {...p} d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />;
+const IcoSun   = p => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>;
+const IcoOut   = p => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>;
+const IcoCheck = p => <svg width={p.size||16} height={p.size||16} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>;
+const IcoMail  = p => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>;
+const IcoLock  = p => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>;
+const IcoShield= p => <Ico {...p} d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />;
+const IcoGlobe = p => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>;
+const IcoEye   = p => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>;
+const IcoType  = p => <svg width={p.size||18} height={p.size||18} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>;
+
+// ── DATA ─────────────────────────────────────────────────────────
+const PRODUCTS = [
+  { id:1, emoji:'🍫', name:'Dark Noir 85%',  ref:'SWT-2024-DN85', purchased:'10 jan 2025', expires:'25 apr 2025', daysLeft:3,  origin:'Ghana',          cacao:'85%', cert:'Fairtrade, Rainforest Alliance', allergens:'Melk, Soja' },
+  { id:2, emoji:'🍬', name:'Praline Mix',     ref:'SWT-2024-PM24', purchased:'15 feb 2025', expires:'5 jun 2025',  daysLeft:42, origin:'Ecuador',         cacao:'62%', cert:'UTZ Certified',                  allergens:'Melk, Noten, Gluten' },
+  { id:3, emoji:'🤍', name:'Witte Truffle',   ref:'SWT-2024-WT10', purchased:'20 feb 2025', expires:'24 jun 2025', daysLeft:61, origin:"Côte d'Ivoire",   cacao:'28%', cert:'Rainforest Alliance',            allergens:'Melk, Soja' },
+];
+const SHOP = [
+  { id:1, emoji:'🍫', name:'Dark Noir 85%',   price:'4,95' },
+  { id:2, emoji:'🍬', name:'Praline Mix',      price:'6,50' },
+  { id:3, emoji:'🤍', name:'Witte Truffle',    price:'5,75' },
+  { id:4, emoji:'🍯', name:'Caramel Delight',  price:'7,25' },
+];
+const INIT_MSGS = [
+  { id:1, from:'bot',  text:'Hallo! Ik ben Coco, jouw Sweet Treats assistent 🍫 Hoe kan ik je vandaag helpen?' },
+  { id:2, from:'user', text:'Welke producten bevatten noten?' },
+  { id:3, from:'bot',  text:'De volgende producten bevatten noten:\n\n• Praline Mix — Hazelnoten, Amandelen\n• Caramel Delight — Pecannoten\n\nAndere producten zijn notenvrij. Wil je meer weten?' },
+  { id:4, from:'user', text:'Ik wil een klacht indienen' },
+  { id:5, from:'bot',  text:'Dat is jammer! Ik stuur je door naar ons klachtenformulier. Je kunt ook direct met een medewerker praten als je dat liever hebt. 🙏' },
+];
+const QUICK = [
+  { label:'Allergenen',      ans:'Wij zijn volledig transparant over alle allergenen. Dark Noir 85% bevat melk en soja. Praline Mix bevat melk, noten en gluten. Witte Truffle bevat melk en soja.' },
+  { label:'Mijn bestelling', ans:'Bestelling #SWT-2025-0042 is onderweg! Verwachte bezorging: morgen 9:00–17:00. Je ontvangt een e-mail zodra het pakket is verzonden.' },
+  { label:'Klacht indienen', ans:"Ga naar het tabblad \"Klachten\" om een klacht in te dienen. Je kunt foto's toevoegen en de status volgen. We reageren binnen 2 werkdagen." },
+  { label:'Duurzaamheid',    ans:'Sweet Treats staat voor duurzame chocolade 🌱 Al onze cacao is Fairtrade of Rainforest Alliance gecertificeerd. Via Cocoa Journey zie je precies waar jouw chocolade vandaan komt!' },
+];
+
+// ── STATUS BAR ───────────────────────────────────────────────────
+function StatusBar({ c }) {
+  return (
+    <div style={{ background:c.card, padding:'10px 22px 6px', display:'flex', justifyContent:'space-between', alignItems:'center', flexShrink:0 }}>
+      <span style={{ fontSize:13, fontWeight:700, color:c.text }}>9:41</span>
+      <div style={{ display:'flex', gap:5, alignItems:'center' }}>
+        <span style={{ fontSize:11, fontWeight:600, color:c.text }}>5G</span>
+        <svg width="20" height="13" viewBox="0 0 20 13">
+          <rect x="0" y="5" width="3" height="8" rx="1" fill={c.text} opacity="0.35"/>
+          <rect x="4.5" y="3" width="3" height="10" rx="1" fill={c.text} opacity="0.6"/>
+          <rect x="9" y="1" width="3" height="12" rx="1" fill={c.text}/>
+          <rect x="13.5" y="0" width="3" height="13" rx="1" fill={c.text}/>
+          <rect x="17" y="3.5" width="2.5" height="7" rx="1" fill="none" stroke={c.text} strokeWidth="1"/>
+          <rect x="17" y="4.5" width="2.5" height="4" rx="0.5" fill={c.text}/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+// ── BOTTOM NAV ───────────────────────────────────────────────────
+function BottomNav({ active, go, c }) {
+  const tabs = [
+    { id:'home',     label:'Home',     Icon:IcoHome },
+    { id:'shop',     label:'Shop',     Icon:IcoShop },
+    { id:'klachten', label:'Klachten', Icon:IcoAlert },
+    { id:'chat',     label:'Chat',     Icon:IcoChat },
+    { id:'profiel',  label:'Profiel',  Icon:IcoUser },
+  ];
+  return (
+    <div style={{ background:c.nav, borderTop:`1px solid ${c.border}`, padding:'6px 0 18px', display:'flex', flexShrink:0 }}>
+      {tabs.map(({ id, label, Icon }) => {
+        const on = active === id;
+        return (
+          <button key={id} onClick={() => go(id)}
+            style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:3, background:'none', border:'none', cursor:'pointer', padding:'5px 0' }}>
+            <Icon size={22} color={on ? '#2C1A0E' : '#A07355'} />
+            <span style={{ fontSize:10, fontWeight: on?600:400, color: on?'#2C1A0E':'#A07355' }}>{label}</span>
+            {on && <div style={{ width:4, height:4, borderRadius:2, background:'#2C1A0E', marginTop:-2 }}/>}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── HOME ─────────────────────────────────────────────────────────
+function HomeScreen({ c, go, setProduct }) {
+  return (
+    <div style={{ flex:1, overflowY:'auto', background:c.bg }} className="no-scroll">
+      <div style={{ background:c.card, padding:'16px 20px 20px' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
+          <div>
+            <p style={{ fontSize:13, color:c.sub }}>Goedemorgen</p>
+            <h1 style={{ fontSize:22, fontWeight:700, color:c.text }}>Hallo Nina 👋</h1>
+          </div>
+          <div style={{ position:'relative', marginTop:4 }}>
+            <div style={{ background:c.section, borderRadius:12, width:40, height:40, display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <IcoBell size={20} color={c.text}/>
+            </div>
+            <div style={{ position:'absolute', top:-3, right:-3, width:18, height:18, borderRadius:9, background:'#C0392B', display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <span style={{ fontSize:10, color:'white', fontWeight:700 }}>2</span>
+            </div>
+          </div>
+        </div>
+        <div style={{ display:'flex', gap:10, marginTop:16 }}>
+          {[
+            { bg:c.section, emoji:'🍫', val:'3',     label:'Producten',          tc:c.text,    lc:c.sub },
+            { bg:'#FFF3CD', emoji:'⚠️', val:'1',     label:'Verloopt binnenkort', tc:'#8B4513', lc:'#A0522D' },
+            { bg:'#D4E6D4', emoji:'✅', val:'2',     label:'Goede staat',         tc:'#3B5E3B', lc:'#3B5E3B' },
+          ].map((s,i) => (
+            <div key={i} style={{ flex:1, background:s.bg, borderRadius:14, padding:'12px 10px' }}>
+              <span style={{ fontSize:22 }}>{s.emoji}</span>
+              <p style={{ fontSize:20, fontWeight:700, color:s.tc, marginTop:4 }}>{s.val}</p>
+              <p style={{ fontSize:10, color:s.lc, lineHeight:1.3 }}>{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ padding:'18px 16px' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12 }}>
+          <h2 style={{ fontSize:16, fontWeight:700, color:c.text }}>Mijn producten</h2>
+          <span style={{ fontSize:12, color:'#A07355', fontWeight:500 }}>Bekijk alles</span>
+        </div>
+
+        {PRODUCTS.map(p => {
+          const warn = p.daysLeft <= 7;
+          return (
+            <button key={p.id} onClick={() => { setProduct(p); go('detail'); }}
+              style={{ width:'100%', background:c.card, borderRadius:16, padding:'14px 16px', marginBottom:10, border:`1.5px solid ${warn?'#F0A500':c.border}`, display:'flex', alignItems:'center', gap:12, cursor:'pointer', textAlign:'left', boxShadow:'0 2px 8px rgba(0,0,0,0.06)' }}>
+              <div style={{ width:52, height:52, borderRadius:14, background:warn?'#FFF3CD':c.section, display:'flex', alignItems:'center', justifyContent:'center', fontSize:26, flexShrink:0 }}>{p.emoji}</div>
+              <div style={{ flex:1 }}>
+                <p style={{ fontSize:14, fontWeight:600, color:c.text }}>{p.name}</p>
+                <p style={{ fontSize:11, color:c.sub, marginTop:2 }}>Gekocht: {p.purchased}</p>
+              </div>
+              <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:6 }}>
+                <div style={{ background:warn?'#F0A500':'#D4E6D4', color:warn?'white':'#3B5E3B', fontSize:10, fontWeight:700, padding:'3px 8px', borderRadius:20 }}>
+                  {warn ? `⚠️ ${p.daysLeft}d` : `✅ ${p.daysLeft}d`}
+                </div>
+                <IcoRight size={14} color={c.sub}/>
+              </div>
+            </button>
+          );
+        })}
+
+        <h2 style={{ fontSize:16, fontWeight:700, color:c.text, marginTop:8, marginBottom:12 }}>Recente activiteit</h2>
+        {[
+          { ico:'🔔', title:'Dark Noir verloopt bijna', sub:'Nog 3 dagen geldig', time:'nu' },
+          { ico:'✅', title:'Bestelling #042 bezorgd',  sub:'Praline Mix ontvangen', time:'2u' },
+        ].map((item,i) => (
+          <div key={i} style={{ background:c.card, borderRadius:14, padding:'12px 14px', marginBottom:8, display:'flex', alignItems:'center', gap:12, border:`1px solid ${c.border}` }}>
+            <div style={{ width:38, height:38, borderRadius:10, background:c.section, display:'flex', alignItems:'center', justifyContent:'center', fontSize:18 }}>{item.ico}</div>
+            <div style={{ flex:1 }}>
+              <p style={{ fontSize:13, fontWeight:600, color:c.text }}>{item.title}</p>
+              <p style={{ fontSize:11, color:c.sub }}>{item.sub}</p>
+            </div>
+            <span style={{ fontSize:11, color:c.sub }}>{item.time}</span>
+          </div>
+        ))}
+
+        <button style={{ width:'100%', background:'#2C1A0E', color:'#F5EDDA', border:'none', borderRadius:16, padding:'15px', fontSize:14, fontWeight:600, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, marginTop:8 }}>
+          <IcoPlus size={18} color="#F5EDDA"/> Product toevoegen
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── PRODUCT DETAIL ───────────────────────────────────────────────
+function DetailScreen({ c, product, go }) {
+  if (!product) return null;
+  const warn = product.daysLeft <= 7;
+  return (
+    <div style={{ flex:1, overflowY:'auto', background:c.bg }} className="no-scroll">
+      <div style={{ background:c.card, padding:'16px 20px 24px' }}>
+        <button onClick={() => go('home')} style={{ background:c.section, border:'none', borderRadius:12, width:38, height:38, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', marginBottom:16 }}>
+          <IcoLeft size={20} color={c.text}/>
+        </button>
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:12 }}>
+          <div style={{ width:100, height:100, borderRadius:28, background:c.section, display:'flex', alignItems:'center', justifyContent:'center', fontSize:52, boxShadow:'0 4px 20px rgba(0,0,0,0.1)' }}>{product.emoji}</div>
+          <div style={{ textAlign:'center' }}>
+            <h1 style={{ fontSize:20, fontWeight:700, color:c.text }}>{product.name}</h1>
+            <p style={{ fontSize:12, color:c.sub, marginTop:2 }}>Ref: {product.ref}</p>
+          </div>
+          <div style={{ background:warn?'#FFF3CD':'#D4E6D4', color:warn?'#8B4513':'#3B5E3B', fontSize:12, fontWeight:600, padding:'5px 14px', borderRadius:20 }}>
+            {warn ? `⚠️ Verloopt over ${product.daysLeft} dagen!` : `✅ ${product.daysLeft} dagen geldig`}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ padding:'16px' }}>
+        <div style={{ background:c.card, borderRadius:18, overflow:'hidden', border:`1px solid ${c.border}`, marginBottom:12 }}>
+          {[
+            { label:'Aankoopdatum',     val:product.purchased, ico:'📅' },
+            { label:'Houdbaar tot',     val:product.expires,   ico:'⏱️', warn },
+            { label:'Herkomst cacao',   val:product.origin,    ico:'🌍' },
+            { label:'Cacaopercentage',  val:product.cacao,     ico:'🍫' },
+            { label:'Certificering',    val:product.cert,      ico:'🏅' },
+          ].map((row,i,a) => (
+            <div key={i} style={{ padding:'13px 16px', borderBottom:i<a.length-1?`1px solid ${c.border}`:'none', display:'flex', alignItems:'center', gap:12 }}>
+              <span style={{ fontSize:18, width:28, textAlign:'center' }}>{row.ico}</span>
+              <div style={{ flex:1 }}>
+                <p style={{ fontSize:11, color:c.sub }}>{row.label}</p>
+                <p style={{ fontSize:13, fontWeight:600, color:row.warn?'#C0392B':c.text }}>{row.val}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ background:'#FFF3CD', borderRadius:16, padding:'14px 16px', marginBottom:12, border:'1.5px solid #F0A500' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
+            <span style={{ fontSize:18 }}>⚠️</span>
+            <p style={{ fontSize:13, fontWeight:700, color:'#8B4513' }}>Allergenen</p>
+          </div>
+          <p style={{ fontSize:12, color:'#8B4513', lineHeight:1.6 }}>Bevat: <strong>{product.allergens}</strong>. Kan sporen bevatten van andere noten en melk.</p>
+        </div>
+
+        <button onClick={() => go('journey')}
+          style={{ width:'100%', background:'#3B5E3B', color:'white', border:'none', borderRadius:16, padding:'15px', fontSize:14, fontWeight:600, cursor:'pointer', marginBottom:10 }}>
+          🌍 Bekijk Cocoa Journey
+        </button>
+        <button style={{ width:'100%', background:'none', color:'#C0392B', border:'1.5px solid #C0392B', borderRadius:16, padding:'15px', fontSize:14, fontWeight:600, cursor:'pointer' }}>
+          Verwijder product
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── SHOP ─────────────────────────────────────────────────────────
+function ShopScreen({ c }) {
+  const [cart, setCart] = useState({ 1:1, 2:1 });
+  const [flash, setFlash] = useState(null);
+
+  const add = id => {
+    setCart(p => ({ ...p, [id]:(p[id]||0)+1 }));
+    setFlash(id);
+    setTimeout(() => setFlash(null), 700);
+  };
+
+  const cartItems = SHOP.filter(p => cart[p.id]);
+  const total = cartItems.reduce((s,p) => s + parseFloat(p.price.replace(',','.')) * (cart[p.id]||0), 0);
+
+  return (
+    <div style={{ flex:1, overflowY:'auto', background:c.bg }} className="no-scroll">
+      <div style={{ background:c.card, padding:'16px 20px 14px' }}>
+        <h1 style={{ fontSize:20, fontWeight:700, color:c.text, marginBottom:12 }}>Shop 🛍️</h1>
+        <div style={{ background:c.input, borderRadius:14, padding:'10px 14px', display:'flex', alignItems:'center', gap:10, border:`1px solid ${c.border}` }}>
+          <IcoSearch size={18} color={c.sub}/>
+          <span style={{ fontSize:13, color:c.sub }}>Zoek chocolade...</span>
+        </div>
+      </div>
+
+      <div style={{ padding:'16px' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:16 }}>
+          {SHOP.map(p => (
+            <div key={p.id} style={{ background:c.card, borderRadius:16, overflow:'hidden', border:`1px solid ${c.border}`, boxShadow:'0 2px 8px rgba(0,0,0,0.05)' }}>
+              <div style={{ background:c.section, height:84, display:'flex', alignItems:'center', justifyContent:'center', fontSize:40 }}>{p.emoji}</div>
+              <div style={{ padding:'10px 12px 12px' }}>
+                <p style={{ fontSize:12, fontWeight:600, color:c.text, marginBottom:2 }}>{p.name}</p>
+                <p style={{ fontSize:12, color:'#A07355', fontWeight:500, marginBottom:8 }}>€{p.price}</p>
+                <button onClick={() => add(p.id)}
+                  style={{ width:'100%', background:flash===p.id?'#3B5E3B':'#2C1A0E', color:'white', border:'none', borderRadius:10, padding:'8px 0', fontSize:12, fontWeight:600, cursor:'pointer', transition:'background 0.3s', fontFamily:'Poppins,sans-serif', display:'flex', alignItems:'center', justifyContent:'center', gap:4 }}>
+                  {flash===p.id ? '✓ Toegevoegd' : <><IcoPlus size={13} color="white"/> Voeg toe</>}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {cartItems.length > 0 && (
+          <div style={{ background:c.card, borderRadius:18, padding:'16px', border:`1px solid ${c.border}`, marginBottom:12 }}>
+            <h3 style={{ fontSize:14, fontWeight:700, color:c.text, marginBottom:12 }}>Bestelling</h3>
+            {cartItems.map(p => (
+              <div key={p.id} style={{ display:'flex', justifyContent:'space-between', padding:'5px 0', fontSize:13 }}>
+                <span style={{ color:c.text }}>{p.emoji} {p.name} ×{cart[p.id]}</span>
+                <span style={{ color:c.text, fontWeight:500 }}>€{p.price}</span>
+              </div>
+            ))}
+            <div style={{ borderTop:`1px solid ${c.border}`, marginTop:8, paddingTop:10, display:'flex', justifyContent:'space-between' }}>
+              <span style={{ fontSize:14, fontWeight:700, color:c.text }}>Totaal</span>
+              <span style={{ fontSize:14, fontWeight:700, color:c.text }}>€{total.toFixed(2).replace('.',',')}</span>
+            </div>
+            <button style={{ width:'100%', background:'#2C1A0E', color:'#F5EDDA', border:'none', borderRadius:14, padding:'14px', fontSize:14, fontWeight:600, cursor:'pointer', marginTop:12, fontFamily:'Poppins,sans-serif' }}>
+              Bestelling plaatsen →
+            </button>
+          </div>
+        )}
+
+        <div style={{ background:c.card, borderRadius:18, padding:'16px', border:`1px solid ${c.border}` }}>
+          <h3 style={{ fontSize:14, fontWeight:700, color:c.text, marginBottom:14 }}>Bestelling #SWT-0042</h3>
+          {[
+            { label:'Besteld',   done:true,  active:false },
+            { label:'Verwerkt',  done:true,  active:false },
+            { label:'Verzonden', done:false, active:true  },
+            { label:'Bezorgd',   done:false, active:false },
+          ].map((step,i,a) => (
+            <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:12 }}>
+              <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
+                <div style={{ width:28, height:28, borderRadius:14, background:step.done?'#3B5E3B':step.active?'#2C1A0E':c.section, border:step.done||step.active?'none':`2px solid ${c.border}`, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                  {step.done && <IcoCheck size={13} color="white"/>}
+                  {step.active && <div style={{ width:8, height:8, borderRadius:4, background:'white' }}/>}
+                </div>
+                {i < a.length-1 && <div style={{ width:2, height:20, background:step.done?'#3B5E3B':c.border, marginTop:2 }}/>}
+              </div>
+              <p style={{ paddingTop:4, paddingBottom:14, fontSize:13, fontWeight:step.active?600:400, color:step.done||step.active?c.text:c.sub }}>{step.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── KLACHTEN ─────────────────────────────────────────────────────
+function KlachtenScreen({ c }) {
+  const [done, setDone] = useState(false);
+  const [type, setType] = useState('');
+  const [desc, setDesc] = useState('');
+
+  if (done) return (
+    <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', background:c.bg, padding:32 }}>
+      <div style={{ fontSize:64, marginBottom:16 }}>✅</div>
+      <h2 style={{ fontSize:20, fontWeight:700, color:c.text, marginBottom:8, textAlign:'center' }}>Klacht ingediend!</h2>
+      <p style={{ fontSize:14, color:c.sub, textAlign:'center', lineHeight:1.7 }}>Je klacht is ontvangen. We reageren binnen 2 werkdagen.</p>
+      <button onClick={() => setDone(false)} style={{ marginTop:24, background:'#2C1A0E', color:'#F5EDDA', border:'none', borderRadius:14, padding:'13px 28px', fontSize:14, fontWeight:600, cursor:'pointer', fontFamily:'Poppins,sans-serif' }}>Terug</button>
+    </div>
+  );
+
+  return (
+    <div style={{ flex:1, overflowY:'auto', background:c.bg }} className="no-scroll">
+      <div style={{ background:c.card, padding:'16px 20px 14px' }}>
+        <h1 style={{ fontSize:20, fontWeight:700, color:c.text }}>Klacht indienen 📋</h1>
+        <p style={{ fontSize:13, color:c.sub, marginTop:4 }}>Vertel ons wat er is misgegaan</p>
+      </div>
+
+      <div style={{ padding:'16px' }}>
+        {/* Status tracker */}
+        <div style={{ background:c.card, borderRadius:18, padding:'16px', border:`1px solid ${c.border}`, marginBottom:16 }}>
+          <p style={{ fontSize:11, fontWeight:600, color:c.sub, marginBottom:14, letterSpacing:'0.5px', textTransform:'uppercase' }}>Status</p>
+          <div style={{ display:'flex', alignItems:'center' }}>
+            {['Ingediend','In behandeling','Afgehandeld'].map((step,i) => (
+              <React.Fragment key={i}>
+                <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:5 }}>
+                  <div style={{ width:30, height:30, borderRadius:15, background:i===0?'#2C1A0E':c.section, border:`2px solid ${i===0?'#2C1A0E':c.border}`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    {i===0 && <div style={{ width:8, height:8, borderRadius:4, background:'white' }}/>}
+                  </div>
+                  <span style={{ fontSize:9, color:i===0?c.text:c.sub, fontWeight:i===0?600:400, textAlign:'center', width:60, lineHeight:1.3 }}>{step}</span>
+                </div>
+                {i<2 && <div style={{ flex:1, height:2, background:c.border, marginBottom:16 }}/>}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ background:c.card, borderRadius:18, padding:'16px', border:`1px solid ${c.border}`, marginBottom:12 }}>
+          {[
+            { label:'Type probleem', el:<select value={type} onChange={e=>setType(e.target.value)} style={{ width:'100%', background:c.input, border:`1px solid ${c.border}`, borderRadius:12, padding:'11px 14px', fontSize:13, color:type?c.text:c.sub, fontFamily:'Poppins,sans-serif', outline:'none', cursor:'pointer' }}><option value="">Selecteer type...</option><option>Kwaliteitsprobleem</option><option>Beschadigde verpakking</option><option>Leveringsprobleem</option><option>Overig</option></select> },
+            { label:'Product',       el:<select style={{ width:'100%', background:c.input, border:`1px solid ${c.border}`, borderRadius:12, padding:'11px 14px', fontSize:13, color:c.sub, fontFamily:'Poppins,sans-serif', outline:'none', cursor:'pointer' }}><option>Selecteer product...</option>{PRODUCTS.map(p=><option key={p.id}>{p.emoji} {p.name}</option>)}</select> },
+            { label:'Omschrijving',  el:<textarea value={desc} onChange={e=>setDesc(e.target.value)} placeholder="Beschrijf het probleem zo gedetailleerd mogelijk..." rows={4} style={{ width:'100%', background:c.input, border:`1px solid ${c.border}`, borderRadius:12, padding:'11px 14px', fontSize:13, color:c.text, fontFamily:'Poppins,sans-serif', resize:'none', outline:'none', lineHeight:1.6 }}/> },
+          ].map((f,i) => (
+            <div key={i} style={{ marginBottom:i<2?14:0 }}>
+              <label style={{ fontSize:11, fontWeight:600, color:c.sub, display:'block', marginBottom:6, letterSpacing:'0.4px', textTransform:'uppercase' }}>{f.label}</label>
+              {f.el}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ background:c.card, borderRadius:18, padding:'16px', border:`1px solid ${c.border}`, marginBottom:12 }}>
+          <p style={{ fontSize:11, fontWeight:600, color:c.sub, marginBottom:12, letterSpacing:'0.4px', textTransform:'uppercase' }}>Foto's toevoegen</p>
+          <div style={{ display:'flex', gap:10 }}>
+            {[0,1,2].map(i => (
+              <div key={i} style={{ flex:1, aspectRatio:'1', background:c.input, borderRadius:14, border:`2px dashed ${c.border}`, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:6, cursor:'pointer' }}>
+                <IcoCam size={22} color={c.sub}/>
+                <span style={{ fontSize:10, color:c.sub }}>Foto {i+1}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <button onClick={() => setDone(true)}
+          style={{ width:'100%', background:'#2C1A0E', color:'#F5EDDA', border:'none', borderRadius:16, padding:'15px', fontSize:14, fontWeight:600, cursor:'pointer', fontFamily:'Poppins,sans-serif' }}>
+          Verstuur klacht
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── CHAT ─────────────────────────────────────────────────────────
+function ChatScreen({ c }) {
+  const [msgs, setMsgs] = useState(INIT_MSGS);
+  const [input, setInput] = useState('');
+  const [typing, setTyping] = useState(false);
+  const bottomRef = useRef(null);
+
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior:'smooth' }); }, [msgs, typing]);
+
+  const send = text => {
+    if (!text.trim()) return;
+    setMsgs(p => [...p, { id:Date.now(), from:'user', text }]);
+    setInput('');
+    setTyping(true);
+    setTimeout(() => {
+      const ans = QUICK.find(q => q.label===text)?.ans || 'Bedankt voor je bericht! Ons team bekijkt dit zo snel mogelijk. Kan ik je verder helpen? 🍫';
+      setMsgs(p => [...p, { id:Date.now()+1, from:'bot', text:ans }]);
+      setTyping(false);
+    }, 1200);
+  };
+
+  return (
+    <div style={{ flex:1, display:'flex', flexDirection:'column', background:c.bg, overflow:'hidden' }}>
+      <div style={{ background:c.card, padding:'14px 20px', display:'flex', alignItems:'center', gap:12, borderBottom:`1px solid ${c.border}`, flexShrink:0 }}>
+        <div style={{ position:'relative' }}>
+          <div style={{ width:44, height:44, borderRadius:22, background:'#D9C9A8', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22 }}>🤖</div>
+          <div style={{ position:'absolute', bottom:0, right:0, width:12, height:12, borderRadius:6, background:'#27AE60', border:`2px solid ${c.card}` }}/>
+        </div>
+        <div style={{ flex:1 }}>
+          <p style={{ fontSize:14, fontWeight:700, color:c.text }}>Coco</p>
+          <p style={{ fontSize:11, color:'#27AE60', fontWeight:500 }}>● Online</p>
+        </div>
+        <button style={{ background:c.section, border:'none', borderRadius:10, padding:'6px 12px', fontSize:11, color:c.text, fontWeight:500, cursor:'pointer', fontFamily:'Poppins,sans-serif' }}>
+          Medewerker →
+        </button>
+      </div>
+
+      <div style={{ flex:1, overflowY:'auto', padding:'16px', display:'flex', flexDirection:'column', gap:10 }} className="no-scroll">
+        {msgs.map(msg => (
+          <div key={msg.id} style={{ display:'flex', justifyContent:msg.from==='user'?'flex-end':'flex-start', alignItems:'flex-end', gap:8 }}>
+            {msg.from==='bot' && <div style={{ width:28, height:28, borderRadius:14, background:'#D9C9A8', display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, flexShrink:0 }}>🤖</div>}
+            <div style={{ maxWidth:'76%', background:msg.from==='user'?'#2C1A0E':c.card, color:msg.from==='user'?'#F5EDDA':c.text, padding:'10px 14px', borderRadius:msg.from==='user'?'18px 18px 4px 18px':'18px 18px 18px 4px', fontSize:13, lineHeight:1.65, border:msg.from==='bot'?`1px solid ${c.border}`:'none', whiteSpace:'pre-line' }}>
+              {msg.text}
+            </div>
+          </div>
+        ))}
+        {typing && (
+          <div style={{ display:'flex', alignItems:'flex-end', gap:8 }}>
+            <div style={{ width:28, height:28, borderRadius:14, background:'#D9C9A8', display:'flex', alignItems:'center', justifyContent:'center', fontSize:14 }}>🤖</div>
+            <div style={{ background:c.card, padding:'12px 16px', borderRadius:'18px 18px 18px 4px', border:`1px solid ${c.border}`, display:'flex', gap:5, alignItems:'center' }}>
+              {[0,1,2].map(i => <div key={i} style={{ width:7, height:7, borderRadius:3.5, background:'#A07355', animation:`typing 1s ease-in-out ${i*0.2}s infinite` }}/>)}
+            </div>
+          </div>
+        )}
+        <div ref={bottomRef}/>
+      </div>
+
+      <div style={{ padding:'6px 14px 8px', display:'flex', gap:8, overflowX:'auto', flexShrink:0 }} className="no-scroll">
+        {QUICK.map(q => (
+          <button key={q.label} onClick={() => send(q.label)}
+            style={{ background:c.card, border:`1.5px solid ${c.border}`, borderRadius:20, padding:'6px 14px', fontSize:12, color:c.text, fontWeight:500, cursor:'pointer', whiteSpace:'nowrap', fontFamily:'Poppins,sans-serif', flexShrink:0 }}>
+            {q.label}
+          </button>
+        ))}
+      </div>
+
+      <div style={{ background:c.card, padding:'10px 16px 14px', display:'flex', gap:10, alignItems:'center', borderTop:`1px solid ${c.border}`, flexShrink:0 }}>
+        <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key==='Enter' && send(input)}
+          placeholder="Stel een vraag..." style={{ flex:1, background:c.input, border:`1px solid ${c.border}`, borderRadius:22, padding:'10px 16px', fontSize:13, color:c.text, fontFamily:'Poppins,sans-serif', outline:'none' }}/>
+        <button onClick={() => send(input)}
+          style={{ width:40, height:40, borderRadius:20, background:'#2C1A0E', border:'none', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', flexShrink:0 }}>
+          <IcoSend size={16} color="#F5EDDA"/>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── COCOA JOURNEY ────────────────────────────────────────────────
+function JourneyScreen({ c, product, go }) {
+  const [step, setStep] = useState(0);
+  useEffect(() => {
+    let i = 0;
+    const t = setInterval(() => { i++; setStep(i); if (i >= 4) clearInterval(t); }, 400);
+    return () => clearInterval(t);
+  }, []);
+
+  const timeline = [
+    { icon:'🌱', title:'Geoogst op plantage',  sub:'Kuapa Kokoo Farm, Ghana', date:'3 okt 2024' },
+    { icon:'🚢', title:'Transport naar Europa', sub:'Haven Rotterdam',         date:'18 okt 2024' },
+    { icon:'🏭', title:'Productie in fabriek',  sub:'Sweet Treats Lyon',       date:'25 okt 2024' },
+    { icon:'📦', title:'Afgeleverd bij jou',    sub:'Nederland',               date:'10 jan 2025' },
+  ];
+
+  return (
+    <div style={{ flex:1, overflowY:'auto', background:c.bg }} className="no-scroll">
+      <div style={{ background:c.card, padding:'16px 20px 14px' }}>
+        <button onClick={() => go('detail')} style={{ background:c.section, border:'none', borderRadius:12, width:38, height:38, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', marginBottom:12 }}>
+          <IcoLeft size={20} color={c.text}/>
+        </button>
+        <h1 style={{ fontSize:20, fontWeight:700, color:c.text }}>Cocoa Journey 🌍</h1>
+        <p style={{ fontSize:13, color:c.sub, marginTop:2 }}>{product?.name||'Dark Noir 85%'}</p>
+      </div>
+
+      <div style={{ padding:'16px' }}>
+        {/* Map */}
+        <div style={{ background:c.card, borderRadius:20, overflow:'hidden', border:`1px solid ${c.border}`, marginBottom:16 }}>
+          <div style={{ padding:'14px 16px 10px' }}>
+            <p style={{ fontSize:11, fontWeight:600, color:c.sub, letterSpacing:'0.5px', textTransform:'uppercase' }}>Route van boom tot bord</p>
+          </div>
+          <div style={{ position:'relative', height:170, background:'linear-gradient(135deg,#A8D5BA,#5A9D8A)', overflow:'hidden' }}>
+            <svg style={{ position:'absolute', inset:0, opacity:0.12 }} width="100%" height="100%">
+              {[...Array(10)].map((_,i) => <line key={`v${i}`} x1={`${i*10}%`} y1="0" x2={`${i*10}%`} y2="100%" stroke="white" strokeWidth="0.8"/>)}
+              {[...Array(8)].map((_,i)  => <line key={`h${i}`} x1="0" y1={`${i*12.5}%`} x2="100%" y2={`${i*12.5}%`} stroke="white" strokeWidth="0.8"/>)}
+            </svg>
+            <svg style={{ position:'absolute', inset:0 }} width="100%" height="100%" viewBox="0 0 370 170" preserveAspectRatio="none">
+              <path d="M 55 95 Q 150 40 215 88 Q 275 125 315 68" fill="none" stroke="rgba(255,255,255,0.9)" strokeWidth="2.5" strokeDasharray="9 7"
+                style={{ strokeDashoffset: step >= 1 ? 0 : 1000, transition:'stroke-dashoffset 2s ease' }}/>
+              {[
+                { x:55,  y:95, label:'🌱', sub:'Ghana' },
+                { x:215, y:88, label:'🏭', sub:'Lyon'  },
+                { x:315, y:68, label:'📦', sub:'NL'    },
+              ].map((pin,i) => (
+                <g key={i} style={{ opacity:step>i?1:0, transition:`opacity 0.4s ease ${i*0.5}s` }}>
+                  <circle cx={pin.x} cy={pin.y} r="18" fill="white" opacity="0.92"/>
+                  <text x={pin.x} y={pin.y+6} textAnchor="middle" fontSize="15">{pin.label}</text>
+                  <text x={pin.x} y={pin.y+28} textAnchor="middle" fontSize="9" fill="white" fontFamily="Poppins,sans-serif" fontWeight="700">{pin.sub}</text>
+                </g>
+              ))}
+            </svg>
+          </div>
+          <div style={{ padding:'12px 16px', display:'flex', gap:16, borderTop:`1px solid ${c.border}` }}>
+            {[{l:'Oorsprong',v:'Ghana 🇬🇭'},{l:'Productie',v:'Lyon 🇫🇷'},{l:'Bestemming',v:'NL 🇳🇱'}].map((item,i) => (
+              <div key={i} style={{ flex:1 }}>
+                <p style={{ fontSize:10, color:c.sub }}>{item.l}</p>
+                <p style={{ fontSize:12, fontWeight:600, color:c.text }}>{item.v}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div style={{ background:c.card, borderRadius:18, padding:'16px', border:`1px solid ${c.border}`, marginBottom:14 }}>
+          <p style={{ fontSize:11, fontWeight:600, color:c.sub, marginBottom:16, letterSpacing:'0.5px', textTransform:'uppercase' }}>Tijdlijn</p>
+          {timeline.map((s,i) => (
+            <div key={i} style={{ display:'flex', gap:12, opacity:step>i?1:0, transform:step>i?'translateY(0)':'translateY(12px)', transition:`opacity 0.5s ease ${i*0.15}s, transform 0.5s ease ${i*0.15}s` }}>
+              <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
+                <div style={{ width:36, height:36, borderRadius:18, background:'#D4E6D4', border:'2px solid #3B5E3B', display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, flexShrink:0 }}>{s.icon}</div>
+                {i<timeline.length-1 && <div style={{ width:2, height:24, background:'#D4E6D4', marginTop:3 }}/>}
+              </div>
+              <div style={{ paddingTop:4, paddingBottom:20 }}>
+                <p style={{ fontSize:13, fontWeight:600, color:c.text }}>{s.title}</p>
+                <p style={{ fontSize:11, color:c.sub }}>{s.sub}</p>
+                <p style={{ fontSize:10, color:'#A07355', marginTop:2 }}>📅 {s.date}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display:'flex', gap:10 }}>
+          {[{ico:'🌿',label:'Fairtrade Certified'},{ico:'🌧️',label:'Rainforest Alliance'}].map((b,i) => (
+            <div key={i} style={{ flex:1, background:'#D4E6D4', borderRadius:14, padding:'12px', display:'flex', alignItems:'center', gap:8, border:'1px solid #3B5E3B44' }}>
+              <span style={{ fontSize:22 }}>{b.ico}</span>
+              <span style={{ fontSize:11, fontWeight:600, color:'#3B5E3B', lineHeight:1.3 }}>{b.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── PROFIEL ──────────────────────────────────────────────────────
+function ProfielScreen({ c, dark, setDark }) {
+  return (
+    <div style={{ flex:1, overflowY:'auto', background:c.bg }} className="no-scroll">
+      <div style={{ background:c.card, padding:'20px 20px 24px', display:'flex', flexDirection:'column', alignItems:'center', gap:10 }}>
+        <div style={{ width:80, height:80, borderRadius:40, background:'#D9C9A8', display:'flex', alignItems:'center', justifyContent:'center', fontSize:36, boxShadow:'0 4px 16px rgba(0,0,0,0.1)' }}>👤</div>
+        <div style={{ textAlign:'center' }}>
+          <h1 style={{ fontSize:18, fontWeight:700, color:c.text }}>Nina de Vries</h1>
+          <p style={{ fontSize:13, color:c.sub }}>nina.devries@email.nl</p>
+        </div>
+        <div style={{ background:'#FFF3CD', borderRadius:20, padding:'6px 16px', display:'flex', alignItems:'center', gap:6, border:'1px solid #F0C040' }}>
+          <span style={{ fontSize:14 }}>🏆</span>
+          <span style={{ fontSize:12, fontWeight:700, color:'#8B4513' }}>Master Taster</span>
+        </div>
+      </div>
+
+      <div style={{ padding:'16px' }}>
+        {[
+          { title:'Account', items:[
+            { Icon:IcoMail,   label:'E-mailadres',      sub:'nina.devries@email.nl' },
+            { Icon:IcoLock,   label:'Wachtwoord',        sub:'••••••••' },
+            { Icon:IcoGlobe,  label:'Taal',              sub:'Nederlands' },
+          ]},
+          { title:'Privacy', items:[
+            { Icon:IcoShield, label:'Gegevensbeheer',    sub:'Exporteer of verwijder data' },
+            { Icon:IcoEye,    label:'Privacyinstellingen',sub:'Beheer toestemmingen' },
+          ]},
+          { title:'Weergave', items:[
+            { Icon:dark?IcoSun:IcoMoon, label:'Donkere modus', sub:dark?'Aan':'Uit', toggle:true },
+            { Icon:IcoType,  label:'Lettergrootte',     sub:'Normaal' },
+          ]},
+        ].map((group, gi) => (
+          <div key={gi} style={{ marginBottom:12 }}>
+            <p style={{ fontSize:11, fontWeight:600, color:c.sub, marginBottom:6, paddingLeft:4, letterSpacing:'0.5px', textTransform:'uppercase' }}>{group.title}</p>
+            <div style={{ background:c.card, borderRadius:18, overflow:'hidden', border:`1px solid ${c.border}` }}>
+              {group.items.map((item, ii) => (
+                <div key={ii} style={{ padding:'13px 16px', borderBottom:ii<group.items.length-1?`1px solid ${c.border}`:'none', display:'flex', alignItems:'center', gap:12 }}>
+                  <div style={{ width:32, height:32, borderRadius:10, background:c.section, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    <item.Icon size={18} color="#A07355"/>
+                  </div>
+                  <div style={{ flex:1 }}>
+                    <p style={{ fontSize:13, fontWeight:500, color:c.text }}>{item.label}</p>
+                    <p style={{ fontSize:11, color:c.sub }}>{item.sub}</p>
+                  </div>
+                  {item.toggle ? (
+                    <button onClick={() => setDark(d => !d)}
+                      style={{ width:46, height:26, borderRadius:13, background:dark?'#2C1A0E':'#D9C9A8', border:'none', cursor:'pointer', position:'relative', transition:'background 0.2s', flexShrink:0 }}>
+                      <div style={{ position:'absolute', top:3, left:dark?23:3, width:20, height:20, borderRadius:10, background:'white', boxShadow:'0 1px 4px rgba(0,0,0,0.2)', transition:'left 0.2s' }}/>
+                    </button>
+                  ) : (
+                    <IcoRight size={16} color={c.sub}/>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <button style={{ width:'100%', background:'none', color:'#C0392B', border:'1.5px solid #C0392B', borderRadius:16, padding:'14px', fontSize:14, fontWeight:600, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, marginTop:4, fontFamily:'Poppins,sans-serif' }}>
+          <IcoOut size={18} color="#C0392B"/> Uitloggen
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── APP ──────────────────────────────────────────────────────────
+function App() {
+  const [screen, setScreen] = useState('home');
+  const [tab, setTab]       = useState('home');
+  const [dark, setDark]     = useState(false);
+  const [product, setProduct] = useState(PRODUCTS[0]);
+  const c = dark ? T.dark : T.light;
+
+  const go = id => {
+    setScreen(id);
+    if (['home','shop','klachten','chat','profiel'].includes(id)) setTab(id);
+  };
+
+  const screens = {
+    home:     <HomeScreen    c={c} go={go} setProduct={setProduct}/>,
+    detail:   <DetailScreen  c={c} go={go} product={product}/>,
+    journey:  <JourneyScreen c={c} go={go} product={product}/>,
+    shop:     <ShopScreen    c={c}/>,
+    klachten: <KlachtenScreen c={c}/>,
+    chat:     <ChatScreen    c={c}/>,
+    profiel:  <ProfielScreen  c={c} dark={dark} setDark={setDark}/>,
+  };
+
+  const showNav = !['detail','journey'].includes(screen);
+
+  return (
+    <div style={{ minHeight:'100vh', background:'linear-gradient(135deg,#E8D5B0 0%,#D4B896 50%,#C4A07A 100%)', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'40px 20px' }}>
+      {/* Wordmark */}
+      <div style={{ marginBottom:20, textAlign:'center' }}>
+        <div style={{ fontSize:30, marginBottom:4 }}>🍫</div>
+        <div style={{ fontSize:22, fontWeight:700, color:'#2C1A0E', letterSpacing:'-0.5px' }}>Sweet Treats</div>
+        <div style={{ fontSize:11, color:'#8B6040', letterSpacing:'3px', textTransform:'uppercase', marginTop:2 }}>Chocolade App</div>
+      </div>
+
+      {/* Phone */}
+      <div style={{ width:390, maxWidth:'100%', height:780, borderRadius:44, background:c.card, boxShadow:'0 32px 80px rgba(0,0,0,0.28), 0 0 0 1px rgba(0,0,0,0.1)', overflow:'hidden', display:'flex', flexDirection:'column', border:'8px solid #1A1008', position:'relative' }}>
+        {/* Notch */}
+        <div style={{ position:'absolute', top:0, left:'50%', transform:'translateX(-50%)', width:120, height:28, background:'#1A1008', borderRadius:'0 0 18px 18px', zIndex:10 }}/>
+        <StatusBar c={c}/>
+        <div style={{ flex:1, display:'flex', flexDirection:'column', overflow:'hidden', marginTop:8 }}>
+          {screens[screen] || screens.home}
+        </div>
+        {showNav && <BottomNav active={tab} go={go} c={c}/>}
+      </div>
+
+      <a href="index.html" style={{ marginTop:20, color:'#5C3D2E', fontSize:13, textDecoration:'none', fontWeight:500, opacity:0.75 }}>
+        ← Terug naar wireframes
+      </a>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
