@@ -1,3 +1,5 @@
 {
-  "outputDirectory": "WIREFRAMES"
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "framework": null
 }
