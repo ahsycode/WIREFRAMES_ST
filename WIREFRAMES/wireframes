@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframes — Sweet Treats App</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --esp:    #2C1A0E;
+  --brown:  #5C3D2E;
+  --tan:    #A07355;
+  --beige:  #F5EDDA;
+  --beige2: #EDE0C4;
+  --beige3: #D9C9A8;
+  --white:  #FDFAF4;
+  --green:  #3B5E3B;
+  --greenl: #D4E6D4;
+  --gray:   #9E9080;
+  --red:    #C0392B;
+}
+
+body {
+  background: #E8DEC8;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── OUTER LAYOUT ── */
+.page-wrap {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 260px;
+  background: var(--esp);
+  padding: 28px 0;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 16px;
+}
+
+.sidebar-logo h2 {
+  color: var(--beige);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sidebar-logo p {
+  color: var(--tan);
+  font-size: 10px;
+  font-weight: 400;
+  margin-top: 2px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.sidebar-label {
+  padding: 6px 20px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--tan);
+  margin-top: 8px;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.13s;
+  border-left: 3px solid transparent;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.06); }
+
+.nav-btn.active {
+  background: rgba(255,255,255,0.1);
+  border-left-color: var(--beige3);
+}
+
+.nav-btn .nb-ico { font-size: 15px; flex-shrink: 0; }
+
+.nav-btn .nb-text { flex: 1; }
+
+.nav-btn .nb-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--beige);
+  display: block;
+  line-height: 1.2;
+}
+
+.nav-btn .nb-sub {
+  font-size: 9.5px;
+  font-weight: 400;
+  color: var(--tan);
+  display: block;
+}
+
+.nav-btn .nb-badge {
+  font-size: 8px;
+  font-weight: 700;
+  background: var(--brown);
+  color: var(--beige);
+  padding: 2px 6px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.nav-btn.active .nb-badge { background: var(--beige3); color: var(--esp); }
+
+/* ── MAIN AREA ── */
+.main {
+  flex: 1;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+/* screen header */
+.screen-header {
+  width: 100%;
+  max-width: 820px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sh-left h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--esp);
+}
+
+.sh-left p {
+  font-size: 12px;
+  color: var(--brown);
+  margin-top: 3px;
+}
+
+.us-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--esp);
+  color: var(--beige);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-top: 4px;
+}
+
+/* ── PHONE FRAME ── */
+.phone-wrap {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 820px;
+}
+
+.phone {
+  width: 320px;
+  background: var(--white);
+  border-radius: 40px;
+  border: 8px solid var(--esp);
+  box-shadow: 0 20px 60px rgba(44,26,14,0.25), 0 4px 16px rgba(44,26,14,0.15);
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* notch */
+.phone::before {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 22px;
+  background: var(--esp);
+  border-radius: 0 0 16px 16px;
+  margin: 0 auto;
+}
+
+.phone-inner {
+  padding: 0;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* status bar */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 20px 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--esp);
+}
+
+/* nav bar inside phone */
+.phone-topbar {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px 10px;
+  gap: 10px;
+}
+
+.back-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--beige2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.topbar-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--esp);
+  flex: 1;
+}
+
+.topbar-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--beige2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+/* phone content area */
+.pcontent {
+  flex: 1;
+  padding: 0 16px 8px;
+  overflow-y: auto;
+}
+
+/* bottom nav */
+.bottom-nav {
+  display: flex;
+  border-top: 1px solid var(--beige3);
+  padding: 8px 0 10px;
+  background: var(--white);
+}
+
+.bnav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--tan);
+}
+
+.bnav-item.active { color: var(--esp); }
+
+.bnav-item .bi { font-size: 17px; }
+
+.bnav-item.active .bi-dot {
+  width: 4px; height: 4px;
+  background: var(--esp);
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+/* ── ANNOTATIONS ── */
+.annotations {
+  flex: 1;
+  min-width: 220px;
+  max-width: 280px;
+}
+
+.ann-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--esp);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--esp);
+}
+
+.ann-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+.ann-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--esp);
+  color: var(--beige);
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.ann-text {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--brown);
+  line-height: 1.5;
+}
+
+.ann-text strong { color: var(--esp); font-weight: 600; }
+
+/* ── REUSABLE UI COMPONENTS ── */
+
+/* section heading inside phone */
+.p-section {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--esp);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 12px 0 8px;
+}
+
+/* product card */
+.prod-card {
+  background: var(--beige);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.prod-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--beige3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.prod-info { flex: 1; min-width: 0; }
+.prod-name { font-size: 12px; font-weight: 600; color: var(--esp); }
+.prod-sub  { font-size: 10px; color: var(--tan); margin-top: 1px; }
+
+.expiry-badge {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.exp-warn { background: #FEF3C7; color: #92400E; }
+.exp-ok   { background: var(--greenl); color: var(--green); }
+
+/* input field */
+.p-input {
+  width: 100%;
+  background: var(--beige);
+  border: 1.5px solid var(--beige3);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-family: 'Poppins', sans-serif;
+  color: var(--esp);
+  margin-bottom: 8px;
+  outline: none;
+}
+
+.p-input::placeholder { color: var(--tan); }
+
+.p-input:focus { border-color: var(--esp); }
+
+/* label */
+.p-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--brown);
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* button */
+.p-btn {
+  width: 100%;
+  background: var(--esp);
+  color: var(--beige);
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: opacity 0.13s;
+}
+
+.p-btn:hover { opacity: 0.88; }
+
+.p-btn-outline {
+  width: 100%;
+  background: transparent;
+  color: var(--esp);
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 11px;
+  border-radius: 10px;
+  border: 1.5px solid var(--esp);
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+/* divider */
+.p-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+  font-size: 10px;
+  color: var(--tan);
+  font-weight: 500;
+}
+.p-divider::before, .p-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--beige3);
+}
+
+/* error banner */
+.p-error {
+  background: #FEE2E2;
+  border: 1px solid #FCA5A5;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 10.5px;
+  color: var(--red);
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* info row */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--beige2);
+  font-size: 11px;
+}
+.info-row .ir-label { color: var(--tan); font-weight: 500; }
+.info-row .ir-val   { color: var(--esp); font-weight: 600; text-align: right; }
+
+/* toggle row */
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--beige2);
+}
+.toggle-row .tr-label { font-size: 11.5px; font-weight: 500; color: var(--esp); }
+.toggle-row .tr-sub   { font-size: 9.5px; color: var(--tan); }
+.toggle {
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.toggle.on  { background: var(--esp); }
+.toggle.off { background: var(--beige3); }
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: white;
+  transition: left 0.2s;
+}
+.toggle.on::after  { left: 18px; }
+.toggle.off::after { left: 2px; }
+
+/* chat bubbles */
+.chat-bubble {
+  max-width: 78%;
+  padding: 8px 11px;
+  border-radius: 14px;
+  font-size: 11px;
+  line-height: 1.45;
+  margin-bottom: 6px;
+}
+.chat-bot {
+  background: var(--beige2);
+  color: var(--esp);
+  border-radius: 14px 14px 14px 4px;
+  align-self: flex-start;
+}
+.chat-user {
+  background: var(--esp);
+  color: var(--beige);
+  border-radius: 14px 14px 4px 14px;
+  align-self: flex-end;
+  margin-left: auto;
+}
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 0;
+}
+
+/* quick replies */
+.quick-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+.chip {
+  background: var(--beige);
+  border: 1.5px solid var(--beige3);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--esp);
+  cursor: pointer;
+}
+.chip:hover { border-color: var(--esp); }
+
+/* chat input bar */
+.chat-input-bar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 0 4px;
+  border-top: 1px solid var(--beige2);
+}
+.chat-input-bar input {
+  flex: 1;
+  background: var(--beige);
+  border: 1.5px solid var(--beige3);
+  border-radius: 20px;
+  padding: 7px 12px;
+  font-size: 11px;
+  font-family: 'Poppins', sans-serif;
+  color: var(--esp);
+  outline: none;
+}
+.send-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--esp);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* notification item */
+.notif-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--beige2);
+  align-items: flex-start;
+}
+.notif-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--esp);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.notif-dot.read { background: var(--beige3); }
+.notif-ico { font-size: 18px; flex-shrink: 0; }
+.notif-text { flex: 1; }
+.notif-title { font-size: 11.5px; font-weight: 600; color: var(--esp); }
+.notif-sub   { font-size: 10px; color: var(--tan); margin-top: 1px; }
+.notif-time  { font-size: 9px; color: var(--tan); flex-shrink: 0; margin-top: 2px; }
+
+/* status tracker */
+.status-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14px 0;
+  position: relative;
+}
+.status-track::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--beige3);
+  z-index: 0;
+}
+.st-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+}
+.st-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--beige3);
+  border: 2px solid var(--beige3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+.st-dot.done  { background: var(--esp); border-color: var(--esp); color: white; }
+.st-dot.active { background: white; border-color: var(--esp); color: var(--esp); font-weight: 700; }
+.st-label { font-size: 8.5px; font-weight: 600; color: var(--tan); text-align: center; line-height: 1.2; max-width: 50px; }
+.st-label.active { color: var(--esp); }
+
+/* photo upload boxes */
+.photo-row {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+.photo-box {
+  flex: 1;
+  aspect-ratio: 1;
+  border: 2px dashed var(--beige3);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--tan);
+  cursor: pointer;
+  background: var(--beige);
+}
+.photo-box:hover { border-color: var(--esp); }
+
+/* product grid */
+.prod-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.pg-card {
+  background: var(--beige);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.pg-img {
+  width: 100%;
+  height: 72px;
+  background: var(--beige3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+.pg-info { padding: 8px; }
+.pg-name { font-size: 11px; font-weight: 600; color: var(--esp); }
+.pg-price { font-size: 10px; color: var(--tan); margin: 2px 0; }
+.pg-add {
+  width: 100%;
+  background: var(--esp);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 5px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+/* order summary sheet */
+.order-sheet {
+  background: var(--white);
+  border-radius: 16px 16px 0 0;
+  padding: 12px 14px;
+  border-top: 2px solid var(--beige3);
+  margin: 0 -16px;
+}
+.os-title { font-size: 13px; font-weight: 700; color: var(--esp); margin-bottom: 8px; }
+.os-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 4px 0;
+  color: var(--brown);
+}
+.os-row.total { font-weight: 700; color: var(--esp); border-top: 1px solid var(--beige3); margin-top: 4px; padding-top: 8px; }
+
+/* map placeholder */
+.map-box {
+  width: 100%;
+  height: 160px;
+  background: var(--beige2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.map-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 20px,
+    rgba(160,115,85,0.08) 20px, rgba(160,115,85,0.08) 21px
+  ),
+  repeating-linear-gradient(
+    90deg, transparent, transparent 20px,
+    rgba(160,115,85,0.08) 20px, rgba(160,115,85,0.08) 21px
+  );
+}
+.map-label { font-size: 12px; font-weight: 600; color: var(--brown); z-index: 1; }
+
+.map-pin {
+  position: absolute;
+  font-size: 18px;
+  z-index: 2;
+}
+.mp1 { top: 30%; left: 25%; }
+.mp2 { top: 28%; left: 55%; }
+.mp3 { top: 35%; left: 78%; }
+
+/* dotted route */
+.map-route {
+  position: absolute;
+  top: 38%;
+  left: 28%;
+  width: 55%;
+  height: 2px;
+  border-top: 2px dashed var(--brown);
+  opacity: 0.4;
+  z-index: 1;
+}
+
+/* timeline */
+.timeline { padding: 0 4px; }
+.tl-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 0;
+  position: relative;
+}
+.tl-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 32px;
+  bottom: -4px;
+  width: 2px;
+  background: var(--beige3);
+}
+.tl-ico-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--beige2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.tl-ico-wrap.done { background: var(--greenl); }
+.tl-body { padding-bottom: 16px; flex: 1; }
+.tl-title { font-size: 11.5px; font-weight: 600; color: var(--esp); }
+.tl-date  { font-size: 9.5px; color: var(--tan); margin-top: 1px; }
+
+/* settings rows */
+.settings-group { margin-bottom: 14px; }
+.sg-title {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--tan);
+  padding: 8px 0 6px;
+}
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--beige2);
+  cursor: pointer;
+}
+.setting-row:hover { background: var(--beige); margin: 0 -4px; padding: 10px 4px; border-radius: 6px; }
+.sr-left { display: flex; gap: 10px; align-items: center; }
+.sr-ico { font-size: 15px; }
+.sr-name { font-size: 12px; font-weight: 500; color: var(--esp); }
+.sr-sub  { font-size: 9.5px; color: var(--tan); }
+.sr-arrow { color: var(--tan); font-size: 12px; }
+
+/* qr frame */
+.qr-frame {
+  width: 180px;
+  height: 180px;
+  border: 3px solid var(--esp);
+  border-radius: 12px;
+  margin: 12px auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--beige2);
+}
+.qr-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--esp);
+  border-style: solid;
+}
+.qr-tl { top: -3px; left: -3px; border-width: 4px 0 0 4px; border-radius: 4px 0 0 0; }
+.qr-tr { top: -3px; right: -3px; border-width: 4px 4px 0 0; border-radius: 0 4px 0 0; }
+.qr-bl { bottom: -3px; left: -3px; border-width: 0 0 4px 4px; border-radius: 0 0 0 4px; }
+.qr-br { bottom: -3px; right: -3px; border-width: 0 4px 4px 0; border-radius: 0 0 4px 0; }
+.qr-inner { font-size: 11px; color: var(--tan); text-align: center; font-weight: 500; }
+
+/* avatar */
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--beige3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 8px;
+}
+
+/* badge pill */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--beige2);
+  border: 1px solid var(--beige3);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--esp);
+}
+
+/* greeting */
+.greeting { padding: 8px 0 4px; }
+.greeting h2 { font-size: 17px; font-weight: 700; color: var(--esp); }
+.greeting p  { font-size: 11px; color: var(--tan); }
+
+/* screen visibility */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* search bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--beige);
+  border: 1.5px solid var(--beige3);
+  border-radius: 10px;
+  padding: 8px 12px;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.search-bar span { font-size: 13px; color: var(--tan); }
+.search-bar input {
+  border: none;
+  background: transparent;
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  color: var(--esp);
+  flex: 1;
+  outline: none;
+}
+
+/* green cert badge */
+.cert-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--greenl);
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--green);
+  margin-top: 10px;
+}
+
+/* scroll hint */
+.scroll-hint {
+  text-align: center;
+  font-size: 9px;
+  color: var(--tan);
+  padding: 6px 0 2px;
+  letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <h2>🍫 Sweet Treats</h2>
+      <p>Wireframes · v1.0</p>
+    </div>
+
+    <div class="sidebar-label">Authenticatie</div>
+    <button class="nav-btn active" onclick="show('s1')">
+      <span class="nb-ico">📸</span>
+      <div class="nb-text">
+        <span class="nb-title">Productregistratie</span>
+        <span class="nb-sub">QR-scan / handmatig</span>
+      </div>
+      <span class="nb-badge">US1</span>
+    </button>
+
+    <div class="sidebar-label">Hoofdschermen</div>
+    <button class="nav-btn" onclick="show('s2')">
+      <span class="nb-ico">🏠</span>
+      <div class="nb-text">
+        <span class="nb-title">Dashboard</span>
+        <span class="nb-sub">Productoverzicht</span>
+      </div>
+      <span class="nb-badge">US2</span>
+    </button>
+    <button class="nav-btn" onclick="show('s3')">
+      <span class="nb-ico">🗂️</span>
+      <div class="nb-text">
+        <span class="nb-title">Productdetail</span>
+        <span class="nb-sub">Info, allergenen, herkomst</span>
+      </div>
+      <span class="nb-badge">US2</span>
+    </button>
+    <button class="nav-btn" onclick="show('s4')">
+      <span class="nb-ico">🔔</span>
+      <div class="nb-text">
+        <span class="nb-title">Notificaties</span>
+        <span class="nb-sub">Meldingen & voorkeuren</span>
+      </div>
+      <span class="nb-badge">US3</span>
+    </button>
+    <button class="nav-btn" onclick="show('s5')">
+      <span class="nb-ico">💬</span>
+      <div class="nb-text">
+        <span class="nb-title">Chatbot Coco</span>
+        <span class="nb-sub">AI assistent & live chat</span>
+      </div>
+      <span class="nb-badge">US4</span>
+    </button>
+    <button class="nav-btn" onclick="show('s6')">
+      <span class="nb-ico">📋</span>
+      <div class="nb-text">
+        <span class="nb-title">Klacht indienen</span>
+        <span class="nb-sub">Formulier & tracking</span>
+      </div>
+      <span class="nb-badge">US5</span>
+    </button>
+    <button class="nav-btn" onclick="show('s7')">
+      <span class="nb-ico">🛍️</span>
+      <div class="nb-text">
+        <span class="nb-title">Bestellen</span>
+        <span class="nb-sub">Catalogus & orderstatus</span>
+      </div>
+      <span class="nb-badge">US6</span>
+    </button>
+
+    <div class="sidebar-label">Unieke functie</div>
+    <button class="nav-btn" onclick="show('s8')" style="border-left-color: var(--green)">
+      <span class="nb-ico">🌍</span>
+      <div class="nb-text">
+        <span class="nb-title">Cocoa Journey</span>
+        <span class="nb-sub">Interactieve herkomstkaart</span>
+      </div>
+      <span class="nb-badge" style="background:#3B5E3B">✦ Uniek</span>
+    </button>
+
+    <div class="sidebar-label">Overig</div>
+    <button class="nav-btn" onclick="show('s9')">
+      <span class="nb-ico">👤</span>
+      <div class="nb-text">
+        <span class="nb-title">Profiel</span>
+        <span class="nb-sub">Instellingen & privacy</span>
+      </div>
+    </button>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- ═══ SCREEN 1: QR SCAN ═══ -->
+    <div class="screen active" id="s1">
+      <div class="screen-header">
+        <div class="sh-left">
+          <h1>📸 Productregistratie</h1>
+          <p>QR-code scannen of handmatig product toevoegen</p>
+          <span class="us-pill">User Story 1 — Productregistratie</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div></div><!-- notch -->
+          <div class="phone-inner">
+            <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-topbar">
+              <div class="topbar-title">Registreer product</div>
+              <div class="topbar-icon">✕</div>
+            </div>
+            <div class="pcontent">
+              <div class="p-error">⚠️ Scan mislukt — probeer opnieuw</div>
+              <div style="text-align:center; margin-bottom:4px">
+                <span class="p-label" style="text-align:center; display:block; font-size:11px; color:var(--tan)">Richt de camera op de QR-code</span>
+              </div>
+              <div class="qr-frame">
+                <div class="qr-corner qr-tl"></div>
+                <div class="qr-corner qr-tr"></div>
+                <div class="qr-corner qr-bl"></div>
+                <div class="qr-corner qr-br"></div>
+                <div class="qr-inner">📷<br>Camera<br>actief</div>
+              </div>
+              <div class="p-divider">of</div>
+              <span class="p-label">Batchnummer / productcode</span>
+              <input class="p-input" placeholder="bijv. ST-2024-0041" />
+              <span class="p-label">Kassabon nummer</span>
+              <input class="p-input" placeholder="Optioneel" />
+              <button class="p-btn">Product toevoegen</button>
+              <button class="p-btn-outline" style="margin-top:6px">Sla over</button>
+            </div>
+            <div class="bottom-nav">
+              <div class="bnav-item active"><span class="bi">🏠</span><span>Home</span></div>
+              <div class="bnav-item"><span class="bi">🛍️</span><span>Shop</span></div>
+              <div class="bnav-item"><span class="bi">📋</span><span>Klachten</span></div>
+              <div class="bnav-item"><span class="bi">💬</span><span>Chat</span></div>
+              <div class="bnav-item"><span class="bi">👤</span><span>Profiel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="annotations">
+          <div class="ann-title">Annotaties</div>
+          <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Foutbanner</strong> — verschijnt bij mislukte scan, verdwijnt na 4 sec of bij sluiten</div></div>
+          <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>QR-scanner</strong> — opent camera automatisch, hoekmarkers tonen uitlijning</div></div>
+          <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Handmatig veld</strong> — fallback bij slechte verlichting of beschadigde QR</div></div>
+          <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Validatie</strong> — bij onbekend batchnummer toont app een foutmelding vóór opslaan</div></div>
+          <div class="ann-item"><div class="ann-num">5</div><div class="ann-text"><strong>Sla over</strong> — klant kan later alsnog product toevoegen vanuit dashboard</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 2: DASHBOARD ═══ -->
+    <div class="screen" id="s2">
+      <div class="screen-header">
+        <div class="sh-left">
+          <h1>🏠 Dashboard</h1>
+          <p>Persoonlijk overzicht van geregistreerde producten</p>
+          <span class="us-pill">User Story 2 — Dashboard</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div></div>
+          <div class="phone-inner">
+            <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-topbar">
+              <div class="topbar-title">Mijn producten</div>
+              <div class="topbar-icon">🔔</div>
+            </div>
+            <div class="pcontent">
+              <div class="greeting">
+                <h2>Hallo, Nina 👋</h2>
+                <p>Je hebt 4 geregistreerde producten</p>
+              </div>
+              <div class="p-section">Geregistreerd</div>
+              <div class="prod-card">
+                <div class="prod-img">🍫</div>
+                <div class="prod-info">
+                  <div class="prod-name">Dark Noir 85%</div>
+                  <div class="prod-sub">Gekocht: 10 jan 2025</div>
+                </div>
+                <span class="expiry-badge exp-warn">3 dgn</span>
+              </div>
+              <div class="prod-card">
+                <div class="prod-img">🍬</div>
+                <div class="prod-info">
+                  <div class="prod-name">Praline Mix</div>
+                  <div class="prod-sub">Gekocht: 5 jan 2025</div>
+                </div>
+                <span class="expiry-badge exp-ok">42 dgn</span>
+              </div>
+              <div class="prod-card">
+                <div class="prod-img">🍰</div>
+                <div class="prod-info">
+                  <div class="prod-name">Witte Truffle</div>
+                  <div class="prod-sub">Gekocht: 2 jan 2025</div>
+                </div>
+                <span class="expiry-badge exp-ok">61 dgn</span>
+              </div>
+              <div class="p-section">Recente activiteit</div>
+              <div class="notif-item">
+                <div class="notif-dot"></div>
+                <div class="notif-ico">⚠️</div>
+                <div class="notif-text">
+                  <div class="notif-title">Dark Noir verloopt binnenkort</div>
+                  <div class="notif-sub">Houdbaar tot 13 jan 2025</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-dot read"></div>
+                <div class="notif-ico">🎉</div>
+                <div class="notif-text">
+                  <div class="notif-title">Nieuw: Caramel Sea Salt</div>
+                  <div class="notif-sub">Nu beschikbaar in de shop</div>
+                </div>
+              </div>
+              <button class="p-btn" style="margin-top:10px">+ Product toevoegen</button>
+            </div>
+            <div class="bottom-nav">
+              <div class="bnav-item active"><span class="bi">🏠</span><div class="bi-dot"></div><span>Home</span></div>
+              <div class="bnav-item"><span class="bi">🛍️</span><span>Shop</span></div>
+              <div class="bnav-item"><span class="bi">📋</span><span>Klachten</span></div>
+              <div class="bnav-item"><span class="bi">💬</span><span>Chat</span></div>
+              <div class="bnav-item"><span class="bi">👤</span><span>Profiel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="annotations">
+          <div class="ann-title">Annotaties</div>
+          <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Begroeting</strong> — gepersonaliseerd via CRM-koppeling op naam van de klant</div></div>
+          <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Verloopbadge</strong> — oranje bij &lt;7 dagen, groen bij &gt;7 dagen, rood bij verlopen</div></div>
+          <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Productkaart</strong> — klikbaar, navigeert naar productdetailscherm (US2)</div></div>
+          <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Notificatiebel</strong> — badge toont aantal ongelezen meldingen</div></div>
+          <div class="ann-item"><div class="ann-num">5</div><div class="ann-text"><strong>Auto-update</strong> — lijst ververst automatisch na nieuw geregistreerd product</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 3: PRODUCTDETAIL ═══ -->
+    <div class="screen" id="s3">
+      <div class="screen-header">
+        <div class="sh-left">
+          <h1>🗂️ Productdetail</h1>
+          <p>Volledige productinformatie inclusief allergenen en herkomst</p>
+          <span class="us-pill">User Story 2 — Dashboard</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div></div>
+          <div class="phone-inner">
+            <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-topbar">
+              <div class="back-btn">←</div>
+              <div class="topbar-title">Productdetail</div>
+            </div>
+            <div class="pcontent">
+              <div style="width:100%; height:110px; background:var(--beige2); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:48px; margin-bottom:10px">🍫</div>
+              <div style="font-size:16px; font-weight:700; color:var(--esp); margin-bottom:2px">Dark Noir 85%</div>
+              <div style="font-size:11px; color:var(--tan); margin-bottom:10px">Sweet Treats · Ref: ST-2024-0041</div>
+              <div class="p-section">Productinformatie</div>
+              <div class="info-row"><span class="ir-label">Aankoopdatum</span><span class="ir-val">10 jan 2025</span></div>
+              <div class="info-row"><span class="ir-label">Houdbaar tot</span><span class="ir-val" style="color:#92400E">13 jan 2025 ⚠️</span></div>
+              <div class="info-row"><span class="ir-label">Herkomst cacao</span><span class="ir-val">Ghana, West-Afrika</span></div>
+              <div class="info-row"><span class="ir-label">Cacaopercentage</span><span class="ir-val">85%</span></div>
+              <div class="info-row"><span class="ir-label">Certificering</span><span class="ir-val">🌿 Fairtrade</span></div>
+              <div class="p-section" style="margin-top:12px">Allergeneninformatie</div>
+              <div style="background:var(--beige); border-radius:8px; padding:10px; font-size:11px; color:var(--brown); line-height:1.7">
+                ⚠️ Bevat: <strong>melk, soja</strong><br>
+                Kan sporen bevatten van: noten, gluten
+              </div>
+              <button class="p-btn-outline" style="margin-top:14px; color:var(--red); border-color:var(--red)">🗑️ Verwijder product</button>
+            </div>
+            <div class="bottom-nav">
+              <div class="bnav-item active"><span class="bi">🏠</span><span>Home</span></div>
+              <div class="bnav-item"><span class="bi">🛍️</span><span>Shop</span></div>
+              <div class="bnav-item"><span class="bi">📋</span><span>Klachten</span></div>
+              <div class="bnav-item"><span class="bi">💬</span><span>Chat</span></div>
+              <div class="bnav-item"><span class="bi">👤</span><span>Profiel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="annotations">
+          <div class="ann-title">Annotaties</div>
+          <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Verloopwaarschuwing</strong> — datum rood bij &lt;7 dagen met ⚠️ icoon</div></div>
+          <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Herkomst</strong> — gekoppeld aan Cocoa Journey scherm (unieke functie)</div></div>
+          <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Allergenen</strong> — prominent getoond, afkomstig uit ERP-systeem</div></div>
+          <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Fairtrade badge</strong> — alleen zichtbaar bij gecertificeerde producten</div></div>
+          <div class="ann-item"><div class="ann-num">5</div><div class="ann-text"><strong>Verwijderknop</strong> — vraagt bevestiging voor definitief verwijderen</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 4: NOTIFICATIES ═══ -->
+    <div class="screen" id="s4">
+      <div class="screen-header">
+        <div class="sh-left">
+          <h1>🔔 Notificaties</h1>
+          <p>Meldingen & notificatievoorkeuren instellen</p>
+          <span class="us-pill">User Story 3 — Notificaties</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div></div>
+          <div class="phone-inner">
+            <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-topbar">
+              <div class="back-btn">←</div>
+              <div class="topbar-title">Meldingen</div>
+            </div>
+            <div class="pcontent">
+              <div class="notif-item">
+                <div class="notif-dot"></div>
+                <div class="notif-ico">⚠️</div>
+                <div class="notif-text">
+                  <div class="notif-title">Dark Noir verloopt over 3 dagen</div>
+                  <div class="notif-sub">Houdbaar tot 13 jan 2025</div>
+                </div>
+                <div class="notif-time">Nu</div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-dot"></div>
+                <div class="notif-ico">⭐</div>
+                <div class="notif-text">
+                  <div class="notif-title">Nieuw: Witte Truffle Edition</div>
+                  <div class="notif-sub">Nu beschikbaar — limited edition</div>
+                </div>
+                <div class="notif-time">2u</div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-dot read"></div>
+                <div class="notif-ico">🏷️</div>
+                <div class="notif-text">
+                  <div class="notif-title">20% korting op seizoenspakket</div>
+                  <div class="notif-sub">Geldig t/m 20 jan 2025</div>
+                </div>
+                <div class="notif-time">Gis</div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-dot read"></div>
+                <div class="notif-ico">🌿</div>
+                <div class="notif-text">
+                  <div class="notif-title">Duurzaamheidsupdate</div>
+                  <div class="notif-sub">Nieuw Rainforest-certificaat behaald</div>
+                </div>
+                <div class="notif-time">3d</div>
+              </div>
+
+              <div class="p-section" style="margin-top:14px">Voorkeuren</div>
+              <div class="toggle-row">
+                <div><div class="tr-label">Verloopwaarschuwingen</div><div class="tr-sub">Bij &lt;7 dagen houdbaar</div></div>
+                <div class="toggle on"></div>
+              </div>
+              <div class="toggle-row">
+                <div><div class="tr-label">Nieuwe producten</div><div class="tr-sub">Releases & limited editions</div></div>
+                <div class="toggle on"></div>
+              </div>
+              <div class="toggle-row">
+                <div><div class="tr-label">Aanbiedingen</div><div class="tr-sub">Kortingen & acties</div></div>
+                <div class="toggle off"></div>
+              </div>
+              <div class="toggle-row">
+                <div><div class="tr-label">Duurzaamheid</div><div class="tr-sub">Certificaten & updates</div></div>
+                <div class="toggle on"></div>
+              </div>
+            </div>
+            <div class="bottom-nav">
+              <div class="bnav-item active"><span class="bi">🏠</span><span>Home</span></div>
+              <div class="bnav-item"><span class="bi">🛍️</span><span>Shop</span></div>
+              <div class="bnav-item"><span class="bi">📋</span><span>Klachten</span></div>
+              <div class="bnav-item"><span class="bi">💬</span><span>Chat</span></div>
+              <div class="bnav-item"><span class="bi">👤</span><span>Profiel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="annotations">
+          <div class="ann-title">Annotaties</div>
+          <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Ongelezen dot</strong> — gevulde bruine stip bij ongelezen, grijs bij gelezen</div></div>
+          <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Soort iconen</strong> — visueel onderscheid per type melding (waarschuwing, promo, nieuws)</div></div>
+          <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Toggle</strong> — klant beheert zelf welke categorieën hij ontvangt (DoD: GDPR-conform)</div></div>
+          <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Niet-storen</strong> — uitbreidbaar naar tijdvenster instellen (bijv. 22:00–08:00)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 5: CHATBOT ═══ -->
+    <div class="screen" id="s5">
+      <div class="screen-header">
+        <div class="sh-left">
+          <h1>💬 Chatbot Coco</h1>
+          <p>AI-assistent 24/7 beschikbaar, doorverwijzing naar medewerker</p>
+          <span class="us-pill">User Story 4 — Chatbot</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div></div>
+          <div class="phone-inner">
+            <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-topbar">
+              <div class="back-btn">←</div>
+              <div style="flex:1">
+                <div class="topbar-title">Coco – Assistent 🤖</div>
+                <div style="font-size:9px; color:var(--green); font-weight:500">● Online</div>
+              </div>
+              <div class="topbar-icon">👤</div>
+            </div>
+            <div class="pcontent">
+              <div class="chat-area">
+                <div class="chat-bubble chat-bot">Hallo Nina! Ik ben Coco, jouw persoonlijke chocolade-assistent. Waarmee kan ik je helpen? 🍫</div>
+                <div class="chat-bubble chat-user">Welke producten bevatten noten?</div>
+                <div class="chat-bubble chat-bot">Op basis van jouw geregistreerde producten bevatten de volgende items noten:<br><br>• <strong>Hazelnoot Crunch</strong> — bevat hazelnoten<br>• <strong>Praline Mix</strong> — kan sporen bevatten</div>
+                <div class="chat-bubble chat-user">Ik wil een klacht indienen</div>
+                <div class="chat-bubble chat-bot">Geen probleem! Ik verwijs je door naar het klachtenformulier. Wil je ook een foto meesturen? 📸</div>
+              </div>
+              <div class="quick-chips">
+                <div class="chip">Allergenen</div>
+                <div class="chip">Mijn bestelling</div>
+                <div class="chip">Klacht indienen</div>
+                <div class="chip">Duurzaamheid</div>
+              </div>
+              <div style="text-align:center; margin:4px 0">
+                <span style="font-size:10px; color:var(--tan); text-decoration:underline; cursor:pointer">Praat met een medewerker →</span>
+              </div>
+              <div class="chat-input-bar">
+                <input placeholder="Typ je vraag..." />
+                <button class="send-btn">→</button>
+              </div>
+            </div>
+            <div class="bottom-nav">
+              <div class="bnav-item"><span class="bi">🏠</span><span>Home</span></div>
+              <div class="bnav-item"><span class="bi">🛍️</span><span>Shop</span></div>
+              <div class="bnav-item"><span class="bi">📋</span><span>Klachten</span></div>
+              <div class="bnav-item active"><span class="bi">💬</span><div class="bi-dot"></div><span>Chat</span></div>
+              <div class="bnav-item"><span class="bi">👤</span><span>Profiel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="annotations">
+          <div class="ann-title">Annotaties</div>
+          <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>CRM-koppeling</strong> — chatbot kent naam en producten van klant voor gepersonaliseerde antwoorden</div></div>
+          <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Quick replies</strong> — meest gestelde vragen direct als chip, vermindert typwerk</div></div>
+          <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Medewerker link</strong> — doorverbinden tijdens openingstijden, terugbelfunctie buiten openingstijden</div></div>
+          <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Online status</strong> — groen = AI beschikbaar, grijs = alleen terugbeloptie</div></div>
+          <div class="ann-item"><div class="ann-num">5</div><div class="ann-text"><strong>Doorverwijzing</strong> — bij "klacht indienen" stuurt chatbot automatisch door naar US5</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 6: KLACHT ═══ -->
+    <div class="screen" id="s6">
+      <div class="screen-header">
+        <div class="sh-left">
+          <h1>📋 Klacht indienen</h1>
+          <p>Formulier met foto-upload en statustracking</p>
+          <span class="us-pill">User Story 5 — Klachten & retouren</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div></div>
+          <div class="phone-inner">
+            <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-topbar">
+              <div class="back-btn">←</div>
+              <div class="topbar-title">Klacht indienen</div>
+            </div>
+            <div class="pcontent">
+              <span class="p-label">Type probleem</span>
+              <select class="p-input" style="appearance:none; cursor:pointer">
+                <option>Smaak / kwaliteit</option>
+                <option>Verpakkingsschade</option>
+                <option>Smeltschade</option>
+                <option>Verkeerd product</option>
+                <option>Anders</option>
+              </select>
+              <span class="p-label">Product</span>
+              <select class="p-input" style="appearance:none; cursor:pointer">
+                <option>Dark Noir 85%</option>
+                <option>Praline Mix</option>
+                <option>Witte Truffle</option>
+              </select>
+              <span class="p-label">Beschrijving</span>
+              <textarea class="p-input" rows="3" placeholder="Beschrijf het probleem zo duidelijk mogelijk..." style="resize:none"></textarea>
+              <span class="p-label">Foto's toevoegen</span>
+              <div class="photo-row">
+                <div class="photo-box">📷</div>
+                <div class="photo-box">+</div>
+                <div class="photo-box">+</div>
+              </div>
+              <div style="font-size:9.5px; color:var(--tan); margin-bottom:10px">Maximaal 3 foto's · JPG/PNG · max 10MB</div>
+              <div class="p-section">Klachtstatus</div>
+              <div class="status-track">
+                <div class="st-step"><div class="st-dot done">✓</div><div class="st-label active">Ingediend</div></div>
+                <div class="st-step"><div class="st-dot active">2</div><div class="st-label active">In behandeling</div></div>
+                <div class="st-step"><div class="st-dot">3</div><div class="st-label">Afgehandeld</div></div>
+              </div>
+              <button class="p-btn">Verstuur klacht</button>
+            </div>
+            <div class="bottom-nav">
+              <div class="bnav-item"><span class="bi">🏠</span><span>Home</span></div>
+              <div class="bnav-item"><span class="bi">🛍️</span><span>Shop</span></div>
+              <div class="bnav-item active"><span class="bi">📋</span><div class="bi-dot"></div><span>Klachten</span></div>
+              <div class="bnav-item"><span class="bi">💬</span><span>Chat</span></div>
+              <div class="bnav-item"><span class="bi">👤</span><span>Profiel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="annotations">
+          <div class="ann-title">Annotaties</div>
+          <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Dropdown type</strong> — selectie triggert automatische herkenning (AI detectie smeltschade etc.)</div></div>
+          <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Product dropdown</strong> — gevuld met geregistreerde producten van klant (uit dashboard)</div></div>
+          <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Foto upload</strong> — max 3 foto's, automatische compressie voor snelle upload</div></div>
+          <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Status tracker</strong> — live bijgewerkt, klant ontvangt pushmelding bij elke stap</div></div>
+          <div class="ann-item"><div class="ann-num">5</div><div class="ann-text"><strong>Compensatie</strong> — bij goedkeuring verschijnt optie voor vervanging of tegoedbon</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 7: BESTELLEN ═══ -->
+    <div class="screen" id="s7">
+      <div class="screen-header">
+        <div class="sh-left">
+          <h1>🛍️ Bestellen</h1>
+          <p>Productcatalogus, winkelwagen & orderstatus tracking</p>
+          <span class="us-pill">User Story 6 — Bestellen</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div></div>
+          <div class="phone-inner">
+            <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-topbar">
+              <div class="topbar-title">Shop</div>
+              <div class="topbar-icon">🛒</div>
+            </div>
+            <div class="pcontent">
+              <div class="search-bar">
+                <span>🔍</span>
+                <input placeholder="Zoek chocolade..." />
+              </div>
+              <div class="p-section">Aanbevolen voor jou</div>
+              <div class="prod-grid">
+                <div class="pg-card">
+                  <div class="pg-img">🍫</div>
+                  <div class="pg-info">
+                    <div class="pg-name">Dark Noir 85%</div>
+                    <div class="pg-price">€ 3,99</div>
+                    <button class="pg-add">+ Toevoegen</button>
+                  </div>
+                </div>
+                <div class="pg-card">
+                  <div class="pg-img">🍬</div>
+                  <div class="pg-info">
+                    <div class="pg-name">Praline Mix</div>
+                    <div class="pg-price">€ 6,49</div>
+                    <button class="pg-add">+ Toevoegen</button>
+                  </div>
+                </div>
+                <div class="pg-card">
+                  <div class="pg-img">🍰</div>
+                  <div class="pg-info">
+                    <div class="pg-name">Witte Truffle</div>
+                    <div class="pg-price">€ 5,25</div>
+                    <button class="pg-add">+ Toevoegen</button>
+                  </div>
+                </div>
+                <div class="pg-card">
+                  <div class="pg-img">🎁</div>
+                  <div class="pg-info">
+                    <div class="pg-name">Caramel Salt</div>
+                    <div class="pg-price">€ 4,75</div>
+                    <button class="pg-add">+ Toevoegen</button>
+                  </div>
+                </div>
+              </div>
+              <div class="order-sheet">
+                <div class="os-title">Jouw bestelling</div>
+                <div class="os-row"><span>Dark Noir 85% ×1</span><span>€ 3,99</span></div>
+                <div class="os-row"><span>Praline Mix ×2</span><span>€ 12,98</span></div>
+                <div class="os-row total"><span>Totaal</span><span>€ 16,97</span></div>
+                <button class="p-btn" style="margin-top:10px">Bestelling plaatsen</button>
+              </div>
+
+              <div class="p-section" style="margin-top:14px">Orderstatus — #ST8821</div>
+              <div class="status-track">
+                <div class="st-step"><div class="st-dot done">✓</div><div class="st-label active">Besteld</div></div>
+                <div class="st-step"><div class="st-dot done">✓</div><div class="st-label active">Verwerkt</div></div>
+                <div class="st-step"><div class="st-dot active">3</div><div class="st-label active">Verzonden</div></div>
+                <div class="st-step"><div class="st-dot">4</div><div class="st-label">Bezorgd</div></div>
+              </div>
+            </div>
+            <div class="bottom-nav">
+              <div class="bnav-item"><span class="bi">🏠</span><span>Home</span></div>
+              <div class="bnav-item active"><span class="bi">🛍️</span><div class="bi-dot"></div><span>Shop</span></div>
+              <div class="bnav-item"><span class="bi">📋</span><span>Klachten</span></div>
+              <div class="bnav-item"><span class="bi">💬</span><span>Chat</span></div>
+              <div class="bnav-item"><span class="bi">👤</span><span>Profiel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="annotations">
+          <div class="ann-title">Annotaties</div>
+          <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Zoekfunctie</strong> — zoekt op naam, smaak, allergeen en certificering</div></div>
+          <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Aanbevelingen</strong> — grid gevuld op basis van aankoophistorie via CRM/BI</div></div>
+          <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>ERP-koppeling</strong> — "Toevoegen" knop controleert real-time voorraad via ERP</div></div>
+          <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Order sheet</strong> — schuift omhoog bij product toevoegen, overzicht vóór betaling</div></div>
+          <div class="ann-item"><div class="ann-num">5</div><div class="ann-text"><strong>Orderstatus</strong> — 4-staps tracker, live gekoppeld aan ERP-bezorgstatus</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 8: COCOA JOURNEY ═══ -->
+    <div class="screen" id="s8">
+      <div class="screen-header">
+        <div class="sh-left">
+          <h1>🌍 Cocoa Journey</h1>
+          <p>Unieke functionaliteit — interactieve herkomstkaart per product</p>
+          <span class="us-pill" style="background:var(--green)">✦ Unieke Functionaliteit</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div></div>
+          <div class="phone-inner">
+            <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-topbar">
+              <div class="back-btn">←</div>
+              <div class="topbar-title">Cocoa Journey</div>
+            </div>
+            <div class="pcontent">
+              <div style="font-size:11px; color:var(--tan); margin-bottom:8px">Dark Noir 85% · Van plantage tot bij jou</div>
+              <div class="map-box">
+                <div class="map-route"></div>
+                <div class="map-pin mp1" title="Ghana">🌱</div>
+                <div class="map-pin mp2" title="Frankrijk">🏭</div>
+                <div class="map-pin mp3" title="Nederland">📦</div>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--tan); margin:-6px 0 10px; padding:0 10px">
+                <span>🌱 Ghana</span>
+                <span>🏭 Frankrijk</span>
+                <span>📦 Nederland</span>
+              </div>
+              <div class="p-section">Herkomstreis</div>
+              <div class="timeline">
+                <div class="tl-item">
+                  <div class="tl-ico-wrap done">🌱</div>
+                  <div class="tl-body">
+                    <div class="tl-title">Geoogst op plantage</div>
+                    <div class="tl-date">Kuapa Kokoo Farm, Ghana · 3 okt 2024</div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-ico-wrap done">🚢</div>
+                  <div class="tl-body">
+                    <div class="tl-title">Transport naar Europa</div>
+                    <div class="tl-date">Haven Rotterdam · 18 okt 2024</div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-ico-wrap done">🏭</div>
+                  <div class="tl-body">
+                    <div class="tl-title">Productie in fabriek</div>
+                    <div class="tl-date">Sweet Treats Fabriek, Lyon · 25 okt 2024</div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-ico-wrap done">📦</div>
+                  <div class="tl-body">
+                    <div class="tl-title">Afgeleverd bij jou</div>
+                    <div class="tl-date">Nederland · 10 jan 2025</div>
+                  </div>
+                </div>
+              </div>
+              <div class="cert-badge">🌿 Fairtrade gecertificeerd · Rainforest Alliance</div>
+            </div>
+            <div class="bottom-nav">
+              <div class="bnav-item"><span class="bi">🏠</span><span>Home</span></div>
+              <div class="bnav-item"><span class="bi">🛍️</span><span>Shop</span></div>
+              <div class="bnav-item"><span class="bi">📋</span><span>Klachten</span></div>
+              <div class="bnav-item"><span class="bi">💬</span><span>Chat</span></div>
+              <div class="bnav-item"><span class="bi">👤</span><span>Profiel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="annotations">
+          <div class="ann-title">Annotaties</div>
+          <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Kaart</strong> — interactief, pins klikbaar voor meer info over plantage/fabriek</div></div>
+          <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>Gepersonaliseerd</strong> — tijdlijn uniek per geregistreerd product, gevuld via ERP</div></div>
+          <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Tijdlijn</strong> — elke stap met exacte datum en locatie voor maximale transparantie</div></div>
+          <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Duurzaamheidsbadge</strong> — Fairtrade & Rainforest Alliance certificaten zichtbaar</div></div>
+          <div class="ann-item"><div class="ann-num">5</div><div class="ann-text"><strong>Strategie</strong> — versterkt klantloyaliteit via emotionele connectie met herkomst van product</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCREEN 9: PROFIEL ═══ -->
+    <div class="screen" id="s9">
+      <div class="screen-header">
+        <div class="sh-left">
+          <h1>👤 Profiel & Instellingen</h1>
+          <p>Accountbeheer, privacy (GDPR), thema & toegankelijkheid</p>
+          <span class="us-pill">Profiel — Instellingen</span>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div></div>
+          <div class="phone-inner">
+            <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-topbar">
+              <div class="topbar-title">Mijn profiel</div>
+            </div>
+            <div class="pcontent">
+              <div style="text-align:center; padding: 8px 0 12px">
+                <div class="avatar">👩</div>
+                <div style="font-size:15px; font-weight:700; color:var(--esp)">Nina de Vries</div>
+                <div style="font-size:11px; color:var(--tan); margin:2px 0 6px">nina@email.nl</div>
+                <span class="badge-pill">🏆 Master Taster</span>
+              </div>
+              <div class="settings-group">
+                <div class="sg-title">Account</div>
+                <div class="setting-row"><div class="sr-left"><span class="sr-ico">📋</span><div><div class="sr-name">Accountgegevens</div><div class="sr-sub">Naam, e-mail, adres</div></div></div><span class="sr-arrow">›</span></div>
+                <div class="setting-row"><div class="sr-left"><span class="sr-ico">🔔</span><div><div class="sr-name">Notificatievoorkeuren</div><div class="sr-sub">Beheer je meldingen</div></div></div><span class="sr-arrow">›</span></div>
+                <div class="setting-row"><div class="sr-left"><span class="sr-ico">🌐</span><div><div class="sr-name">Taal & regio</div><div class="sr-sub">Nederlands</div></div></div><span class="sr-arrow">›</span></div>
+              </div>
+              <div class="settings-group">
+                <div class="sg-title">Privacy</div>
+                <div class="setting-row"><div class="sr-left"><span class="sr-ico">🔒</span><div><div class="sr-name">Privacy-instellingen</div><div class="sr-sub">AVG / GDPR-conform</div></div></div><span class="sr-arrow">›</span></div>
+                <div class="setting-row"><div class="sr-left"><span class="sr-ico">🗑️</span><div><div class="sr-name">Gegevens beheren</div><div class="sr-sub">Verwijder of exporteer</div></div></div><span class="sr-arrow">›</span></div>
+              </div>
+              <div class="settings-group">
+                <div class="sg-title">Weergave</div>
+                <div class="setting-row"><div class="sr-left"><span class="sr-ico">🌙</span><div><div class="sr-name">Thema</div><div class="sr-sub">Licht / donker</div></div></div><div class="toggle off"></div></div>
+                <div class="setting-row"><div class="sr-left"><span class="sr-ico">♿</span><div><div class="sr-name">Toegankelijkheid</div><div class="sr-sub">Schermlezer, contrast</div></div></div><span class="sr-arrow">›</span></div>
+              </div>
+              <button class="p-btn-outline" style="color:var(--red); border-color:var(--red); margin-top:4px">Uitloggen</button>
+            </div>
+            <div class="bottom-nav">
+              <div class="bnav-item"><span class="bi">🏠</span><span>Home</span></div>
+              <div class="bnav-item"><span class="bi">🛍️</span><span>Shop</span></div>
+              <div class="bnav-item"><span class="bi">📋</span><span>Klachten</span></div>
+              <div class="bnav-item"><span class="bi">💬</span><span>Chat</span></div>
+              <div class="bnav-item active"><span class="bi">👤</span><div class="bi-dot"></div><span>Profiel</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="annotations">
+          <div class="ann-title">Annotaties</div>
+          <div class="ann-item"><div class="ann-num">1</div><div class="ann-text"><strong>Gamification badge</strong> — Master Taster zichtbaar op profiel als motivatie</div></div>
+          <div class="ann-item"><div class="ann-num">2</div><div class="ann-text"><strong>GDPR sectie</strong> — klant kan data exporteren of verwijderen conform AVG-wet (DoD vereiste)</div></div>
+          <div class="ann-item"><div class="ann-num">3</div><div class="ann-text"><strong>Donkere modus toggle</strong> — direct toepasbaar, voorkeur opgeslagen in account</div></div>
+          <div class="ann-item"><div class="ann-num">4</div><div class="ann-text"><strong>Toegankelijkheid</strong> — schermlezer, aanpasbaar contrast en lettergrootte (DoD vereiste)</div></div>
+          <div class="ann-item"><div class="ann-num">5</div><div class="ann-text"><strong>Meertalig</strong> — taalinstelling beschikbaar: NL, EN, FR, DE</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- main -->
+</div><!-- page-wrap -->
+
+<script>
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.querySelector('.main').scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
